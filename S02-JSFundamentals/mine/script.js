@@ -174,3 +174,104 @@ if (moneyJavier) {
 }
 
 console.log('**********L22 equality operators == === **********');
+// assignment
+let numNeighbours = Number('20');
+if (numNeighbours == 1) {
+	console.log('Only 1 border');
+} else if (numNeighbours > 1) {
+	console.log('More than 1 border');
+} else {
+	console.log('No borders');
+}
+
+console.log('**********L23 Basic boolean logic AND OR & NOT **********');
+console.log('**********L24 Logical operators **********');
+// Assignment
+let languageSara = 'spanish';
+let popSara = 150000000;
+let saraIsland = false;
+
+if (language === languageSara && popSara > population && saraIsland === isIsland) {
+	console.log(`Sarah should live in ${country}`);
+} else {
+	console.log(`${country} doesn't meet Sarah's criteria`);
+}
+
+console.log('**********L25 Coding challenge 3 **********');
+
+let dolphinsAvg = (96 + 108 + 89) / 3;
+let koalasAvg = (88 + 91 + 110) / 3;
+getWinner(dolphinsAvg, koalasAvg);
+
+dolphinsAvg = (97 + 112 + 101) / 3;
+koalasAvg = (109 + 95 + 123) / 3;
+getWinner(dolphinsAvg, koalasAvg);
+
+dolphinsAvg = (97 + 112 + 101) / 3;
+koalasAvg = (109 + 95 + 106) / 3;
+getWinner(dolphinsAvg, koalasAvg);
+
+function getWinner(dolphisAvg, koalasAvg) {
+	if (dolphinsAvg > koalasAvg && dolphinsAvg > 100) {
+		console.log('The dolphins won', dolphinsAvg, koalasAvg);
+	} else if (dolphinsAvg < koalasAvg && koalasAvg > 100) {
+		console.log('The koalas won', dolphinsAvg, koalasAvg);
+	} else if (dolphinsAvg === koalasAvg && dolphinsAvg > 100) {
+		console.log('Its a draw', dolphinsAvg, koalasAvg);
+	} else {
+		console.log('No one won', dolphinsAvg, koalasAvg);
+	}
+}
+
+console.log('**********L26 Switch **********');
+console.log('**********L27 Statement v Expressions **********');
+// Expression: code that produces value
+3 + 4;
+1991;
+true && false && !false;
+
+// Statement: doesnt produce values as it self
+if (23 > 20) {
+	const num27 = 23;
+}
+
+/* in a template literal We can use just expressions not statements */
+
+console.log('**********L28 The conditional thernary operator **********');
+console.log('**********L29 Challenge 4 **********');
+
+function getTip(bill) {
+	return bill >= 50 && bill <= 300 ? bill * 0.15 : bill * 0.2;
+}
+
+function printTicket(bill) {
+	console.log(`The bill was ${bill}, the tip was ${getTip(bill)}, and the total value is: ${bill + getTip(bill)}`);
+}
+
+let bill = 275;
+printTicket(bill);
+bill = 40;
+printTicket(bill);
+bill = 430;
+printTicket(bill);
+
+console.log('**********L30 ES5, ES6 and ESNext **********');
+// 95 Mocha was created
+// 97 ECMA standar ES1: JAvaScript
+// 09 ECMA5
+// 15 ECMA6 biggest update
+// new features yearly ES6+
+
+/**
+ * It has compatibility from all the previous versions.
+ * Nothing is removed, just added.
+ * 
+ * How can use modern JS today?
+ * During development: simply use the latest google chrome
+ * Production: Convert to previous version as Babel.
+ * 
+ * SUPPORT
+ * ES5 is supported from all browsers down to IE 9 from 2011
+ * 
+ * ESNEXT: some browsers implement future implementations
+ */
