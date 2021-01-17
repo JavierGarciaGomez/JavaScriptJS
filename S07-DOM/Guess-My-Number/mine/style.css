@@ -117,3 +117,7 @@ h1 {
 .label-score {
   margin-bottom: 2rem;
 }
+
+.winnerBg {
+  background-color: rgb(96, 179, 71);
+}
