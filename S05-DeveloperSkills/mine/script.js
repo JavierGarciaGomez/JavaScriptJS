@@ -48,7 +48,15 @@ console.log(x);
 
 const temperatures = [ 3, -2, -6, -1, 'error', 9, 13, 17, 15, 14, 9, 5 ];
 
-const calcTemperatures = (arr) => {
+const calcTemperatures = (...args) => {
+	const arr = [];
+	args.forEach((arg) => {
+		arg.forEach((element) => {
+			arr.push(element);
+		});
+	});
+	console.log(arr);
+
 	let maxTemp = Number.MIN_VALUE;
 	let minTemp = Number.MAX_VALUE;
 
@@ -74,4 +82,70 @@ calcTemperatures(temperatures);
 // 2) Breaking up into sub-problems
 // - Merge 2 arrays
 
-const temperatures2 = [ 3, 5, 1, 0, 5 ];
+const temperatures2 = [ 3, 5, 1, 0, 5, -33 ];
+const temperatures3 = [ 33 ];
+
+calcTemperatures(temperatures, temperatures2, temperatures3);
+
+/**60. The debugging process
+ * 1. Identify
+ * 2. Find
+ * 3. Fix it
+ * 4. Prevent (search similar code)
+ */
+
+/**61. Debugging */
+
+///////////////////////////////////////
+// Debugging with the Console and Breakpoints
+const measureKelvin = function() {
+	const measurement = {
+		type: 'temp',
+		unit: 'celsius',
+		// value: '10'
+		value: Number('10') // fix the error
+	};
+
+	// B) FIND
+	console.log(measurement.value);
+	console.warn(measurement.value);
+	console.error(measurement.value);
+	console.table(measurement);
+
+	// console.log(measurement.value);
+	// console.warn(measurement.value);
+	// console.error(measurement.value);
+
+	const kelvin = measurement.value + 273;
+	return kelvin;
+};
+
+// A) IDENTIFY
+console.log(measureKelvin());
+
+// Debugger in google chrome
+// sources and set breakpoints
+
+// Coding Challenge #1
+
+/*
+Given an array of forecasted maximum temperatures, the thermometer displays a string with these temperatures.
+
+Example: [17, 21, 23] will print "... 17ºC in 1 days ... 21ºC in 2 days ... 23ºC in 3 days ..."
+
+Create a function 'printForecast' which takes in an array 'arr' and logs a string like the above to the console.
+
+Use the problem-solving framework: Understand the problem and break it up into sub-problems!
+
+TEST DATA 1: [17, 21, 23]
+TEST DATA 2: [12, 5, -5, 0, 4]
+*/
+
+const printForecast = function(arr) {
+	let str = '';
+	for (let i = 0; i < arr.length; i++) {
+		str += `${arr[i]}ºC in ${i + 1} days ... `;
+	}
+	console.log('...' + str);
+};
+printForecast([ 17, 21, 23 ]);
