@@ -213,10 +213,54 @@ GOOD LUCK 😀
 */
 
 function checkDogs(dogsJulia, dogsKate) {
-  dogsJulia = dogsJulia.splice(1, -1);
-  console.log(dogsJulia);
+  dogsJulia = dogsJulia.slice(1, -2);
+  const fullDogs = dogsJulia.concat(dogsKate);
+  fullDogs.forEach((dogAge, index) => {
+    console.log(
+      `Dog number ${index + 1} is ${
+        dogAge >= 3 ? `an adult, and is ${dogAge} yeas old` : 'still a puppy 🐶'
+      }`
+    );
+  });
 }
 
-const dogsJulia = [3, 5, 2, 12, 7];
-const dogsKate = [4, 1, 15, 8, 3];
+let dogsJulia = [3, 5, 2, 12, 7];
+let dogsKate = [4, 1, 15, 8, 3];
 checkDogs(dogsJulia, dogsKate);
+console.log('SECOND TEST');
+dogsJulia = [9, 16, 6, 8, 3];
+dogsKate = [10, 5, 6, 1, 4];
+checkDogs(dogsJulia, dogsKate);
+
+console.log('SOLUTION');
+const checkDogsSol = function (dogsJulia, dogsKate) {
+  const dogsJuliaCorrected = dogsJulia.slice();
+  dogsJuliaCorrected.splice(0, 1);
+  dogsJuliaCorrected.splice(-2);
+  // dogsJulia.slice(1, 3);
+  const dogs = dogsJuliaCorrected.concat(dogsKate);
+  console.log(dogs);
+
+  dogs.forEach(function (dog, i) {
+    if (dog >= 3) {
+      console.log(`Dog number ${i + 1} is an adult, and is ${dog} years old`);
+    } else {
+      console.log(`Dog number ${i + 1} is still a puppy 🐶`);
+    }
+  });
+};
+
+checkDogsSol(dogsJulia, dogsKate);
+
+console.log('********** 146. MAP(), FILTER() REDUCE() **********');
+/**
+ * MAP: creates a brand new array, based on the original, aplicating the method
+ * FILTER: filter the elements that satisfy the filter condition
+ * REDUCE: reduces all the elements in one single value
+ */
+
+console.log('********** 147. MAP() **********');
+
+const eurToUsd = 1.1;
+movements.map(element => element * eurToUsd);
+console.log(movements);
