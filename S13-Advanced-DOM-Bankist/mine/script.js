@@ -1,12 +1,19 @@
 'use strict';
 
-///////////////////////////////////////
-// Modal window
-
+// SELECTORS
 const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
 const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
+const btnScrollTo = document.querySelector('.btn--scroll-to');
+const section1 = document.querySelector('#section--1');
+const nav = document.querySelector('.nav');
+const tabs = document.querySelectorAll('.operations__tab');
+const tabsContainer = document.querySelector('.operations__tab-container');
+const tabsContent = document.querySelectorAll('.operations__content');
+
+///////////////////////////////////////
+// Modal window
 
 const openModal = function (e) {
   e.preventDefault();
@@ -31,6 +38,77 @@ document.addEventListener('keydown', function (e) {
     closeModal();
   }
 });
+
+// 183 moved here 187
+//+++++++++++++++++++ Button scrolling
+btnScrollTo.addEventListener('click', e => {
+  section1.scrollIntoView({ behavior: 'smooth' });
+});
+
+//+++++++++++++++++++ Page navigation
+// putting the links with event propagation
+/*
+document.querySelectorAll('.nav__link').forEach(function (navLink) {
+  navLink.addEventListener('click', function (e) {
+    e.preventDefault();
+    // getting the id of the element
+    const id = this.getAttribute('href');
+    console.log(id);
+    document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+  });
+});
+*/
+
+// putting the links with event delegation
+// 1. Add event listener to common parent element
+// 2. Determine what element originated the event
+document.querySelector('.nav__links').addEventListener('click', function (e) {
+  console.log(e.target);
+  if (e.target.classList.contains('nav__link')) {
+    e.preventDefault();
+    const id = e.target.getAttribute('href');
+    console.log(id);
+    document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+  }
+});
+
+// 189
+// ++++++++++++++Tabbed component
+tabsContainer.addEventListener('click', function (e) {
+  // selecting the closest element with operations_tab class
+  const clicked = e.target.closest('.operations__tab');
+  // Ignoring clicks that return null
+  if (!clicked) return;
+  // Remove active classes
+  tabs.forEach(t => t.classList.remove('operations__tab--active'));
+  tabsContent.forEach(c => c.classList.remove('operations__content--active'));
+
+  // Activate tab
+  clicked.classList.add('operations__tab--active');
+
+  // Activate content area. it has an attribute of data-tab, so we get it and use it to select the correct content
+  console.log(clicked.dataset.tab);
+  document
+    .querySelector(`.operations__content--${clicked.dataset.tab}`)
+    .classList.add('operations__content--active');
+});
+
+// 190
+// ++++++++++++++Passing arguments to event handlers
+nav.addEventListener('mouseover', function (e) {
+  if (e.target.classList.contains('nav__link')) {
+    const link = e.target;
+  }
+  if (!link) return;
+});
+
+nav.addEventListener('mouseout', function (e) {});
+
+/**
+ * LESSONS
+ */
+
+//  Scrolling
 
 console.log('********** 180. How the dom works **********');
 /**Every single node of the dom tree is of type node, and in JS is represented in an object
@@ -133,6 +211,7 @@ logo.classList.toggle('test');
 logo.classList.contains('test');
 
 console.log('********** 183. Implementing smooth scrolling **********');
+/* MOVED TO TOP
 const btnScrollTo = document.querySelector('.btn--scroll-to');
 const section1 = document.querySelector('#section--1');
 
@@ -164,6 +243,7 @@ btnScrollTo.addEventListener('click', e => {
   console.log('+++++ modern way: scrollIntoView() +++++');
   section1.scrollIntoView({ behavior: 'smooth' });
 });
+*/
 
 console.log('********** 184. Types of events and event handlers **********');
 const h1 = document.querySelector('h1');
@@ -196,11 +276,74 @@ console.log('********** 185. Bubbling and capturing **********');
  */
 
 console.log('********** 186. Event propagation in practice **********');
-const randomInt = (min, max) =>
-  Math.floor(Math.random() * (max - min + 1) + min);
-const randomColor = () =>
-  `rgb(${randomInt(0, 255)},${randomInt(0, 255)},${randomInt(0, 255)})`;
 
-document.querySelector('.nav__link').addEventListener('click', function (e) {
-  console.log('link');
+// const randomInt = (min, max) =>
+//   Math.floor(Math.random() * (max - min + 1) + min);
+// const randomColor = () =>
+//   `rgb(${randomInt(0, 255)},${randomInt(0, 255)},${randomInt(0, 255)})`;
+
+// /**
+//  * event buggling: The target is the specific element were the event happened even if the event is attached to a parent
+//  * currentTarget is where the event is attached
+//  */
+// document.querySelector('.nav__link').addEventListener('click', function (e) {
+//   this.style.backgroundColor = randomColor();
+//   console.log('LINK', e.target, e.currentTarget);
+//   // Stop event propagation
+//   //e.stopPropagation();
+// });
+
+// document.querySelector('.nav__links').addEventListener('click', function (e) {
+//   this.style.backgroundColor = randomColor();
+//   console.log('CONTAINER', e.target, e.currentTarget);
+// });
+
+// document.querySelector('.nav').addEventListener('click', function (e) {
+//   this.style.backgroundColor = randomColor();
+//   console.log('NAV', e.currentTarget);
+// });
+
+console.log('********** 187. Event delegation **********');
+// Worked on the top
+
+console.log('********** 188. DOM Traversing **********');
+const myH1 = document.querySelector('h1');
+
+console.log(
+  '+++++ goingDownwards: childNodes children, firstElementChild +++++'
+);
+// Going downwards: child
+console.log(myH1.querySelectorAll('.highlight'));
+console.log('full Element', myH1);
+console.log('childNodes', myH1.childNodes);
+console.log('children', myH1.children);
+
+myH1.firstElementChild.style.color = 'white';
+myH1.lastElementChild.style.color = 'orangered';
+
+console.log('+++++ goingUpwards: parentNode, parentElement, closest +++++');
+
+// Going upwards: parents
+console.log('parentNode', myH1.parentNode);
+console.log('parentElement', myH1.parentElement);
+
+myH1.closest('.header').style.background = 'var(--gradient-secondary)';
+
+myH1.closest('h1').style.background = 'var(--gradient-primary)';
+
+console.log('+++++ goingSideways: siblings +++++');
+
+// Going sideways: siblings
+console.log(myH1.previousElementSibling);
+console.log(myH1.nextElementSibling);
+
+console.log(myH1.previousSibling);
+console.log(myH1.nextSibling);
+
+console.log(myH1.parentElement.children);
+[...myH1.parentElement.children].forEach(function (el) {
+  if (el !== myH1) el.style.transform = 'scale(0.5)';
 });
+
+console.log('********** 189. Building a tabbed component **********');
+console.log('********** 190. Passing arguments to event listener **********');
