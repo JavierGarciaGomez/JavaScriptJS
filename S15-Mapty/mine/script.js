@@ -22,55 +22,117 @@ console.log('********** 226 How to plan a web project **********');
  * 1. User stories
  * -As a (user) i want (action) so that (benefit)
  */
-console.log('********** 227 Using the GeoLocation API **********');
-let map;
-let mapEvent;
 
-if (navigator.geolocation) {
-  navigator.geolocation.getCurrentPosition(
-    function (position) {
-      const { latitude, longitude } = position.coords;
-      console.log(latitude, longitude);
-      console.log(position);
-      console.log(`https://www.google.com/maps/@${latitude},${longitude}`);
+// 233
+class Workout {
+  date = new Date();
+  id = (Date.now() + '').slice(-10);
 
-      const coords = [latitude, longitude];
+  constructor(coords, distance, duration) {
+    this.coords = coords;
+    this.distance = distance;
+    this.duration = duration;
+  }
+}
 
-      console.log('********** 228 Displaying a map with Leaflet **********');
+// 233
+class Running extends Workout {
+  constructor(coords, distance, duration, cadence) {
+    super(coords, distance, duration);
+    this.cadence = cadence;
+    this.calcPace();
+  }
+  calcPace() {
+    this.pace = this.duration / this.distance;
+    return this.pace;
+  }
+}
 
-      map = L.map('map').setView(coords, 13);
+// 233
+class Cycling extends Workout {
+  constructor(coords, distance, duration, elev) {
+    super(coords, distance, elev);
+    this.elev = elev;
+    this.calcSpeed();
+  }
+  calcSpeed() {
+    this.speed = this.distance / this.duration;
+    return this.speed;
+  }
+}
 
-      L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
-        attribution:
-          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      }).addTo(map);
+// const run1 = new Running([39, -12], 5.2, 24, 178);
+// const cycl1 = new Cycling([39, -12], 27, 95, 523);
+// console.log(run1, cycl1);
 
-      //   handling clicks on map
-      //   229, 230
-      map.on('click', function (e) {
-        mapEvent = e;
-        form.classList.remove('hidden');
-        inputDistance.focus();
+// APPLICATION ARCHITECTURE
+// 232
+class App {
+  #map;
+  #mapEvent;
+  constructor() {
+    this._getPosition();
+    //   229, 230
+    form.addEventListener('submit', this._newWorkout.bind(this));
 
-        //   229
-      });
-    },
-    function () {
-      alert('Could not get your position');
+    // 230
+    inputType.addEventListener('change', this._toggleElevationField);
+  }
+
+  _getPosition() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        this._loadMap.bind(this),
+        function () {
+          alert('Could not get your position');
+        }
+      );
     }
-  );
+  }
 
-  //   229, 230
-  form.addEventListener('submit', function (e) {
+  _loadMap(position) {
+    const { latitude, longitude } = position.coords;
+    console.log(latitude, longitude);
+    console.log(position);
+    console.log(`https://www.google.com/maps/@${latitude},${longitude}`);
+    console.log(this);
+
+    const coords = [latitude, longitude];
+
+    this.#map = L.map('map').setView(coords, 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    }).addTo(this.#map);
+
+    //   handling clicks on map
+    //   229, 230, 232
+    this.#map.on('click', this._showForm.bind(this));
+  }
+
+  _showForm(e) {
+    this.#mapEvent = e;
+    form.classList.remove('hidden');
+    inputDistance.focus();
+  }
+
+  _toggleElevationField(e) {
+    inputElevation.closest('.form__row').classList.toggle('form__row--hidden');
+    inputCadence.closest('.form__row').classList.toggle('form__row--hidden');
+  }
+
+  _newWorkout(e) {
     e.preventDefault();
 
     // clear form
     inputDistance.value = inputDuration.value = inputCadence.value = inputElevation.value =
       '';
     // Display marker
-    const { lat, lng } = mapEvent.latlng;
+    console.log(this.#mapEvent);
+    const { lat, lng } = this.#mapEvent.latlng;
     L.marker([lat, lng])
-      .addTo(map)
+      .addTo(this.#map)
       .bindPopup(
         L.popup({
           maxWidth: 250,
@@ -82,11 +144,8 @@ if (navigator.geolocation) {
       )
       .setPopupContent('workout')
       .openPopup();
-  });
+  }
 }
 
-// 230
-inputType.addEventListener('change', function (e) {
-  inputElevation.closest('.form__row').classList.toggle('form__row--hidden');
-  inputCadence.closest('.form__row').classList.toggle('form__row--hidden');
-});
+// 232
+const app = new App();
