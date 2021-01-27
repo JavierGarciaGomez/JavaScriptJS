@@ -69,3 +69,96 @@ export.addTocart = function (product, quantity) {
   */
 
 console.log('********** 269 Command Line **********');
+/**
+ * cd
+ * Desktop
+ * ls
+ * clear
+ * cd ..
+ * auto complete
+ * mkdir
+ * touch / edit
+ * rm del
+ * rmdir
+ */
+
+console.log('********** 270 Introduction to NPM **********');
+/**
+ * 270
+ * npm -v
+ * npm init
+ * npm install (package) / i (package)
+ * package json
+ * npm install (install all the dependencies)
+ */
+// import cloneDeep from './node_modules/lodash-es/cloneDeep.js';
+import cloneDeep from 'lodash-es';
+
+const state = {
+  cart: [
+    { product: 'bread', quantity: 5 },
+    { product: 'pizza', quantity: 5 },
+  ],
+  user: { loggedIn: true },
+};
+// create a copy from an object
+
+const stateClone = Object.assign({}, state);
+const stateDeepClone = cloneDeep(state);
+console.log('state', state);
+console.log('stateClone', stateClone);
+console.log('stateDeepClone', stateDeepClone);
+
+console.log('+++++ Changing user to logged in false');
+state.user.loggedIn = false;
+console.log('state', state.user);
+console.log('stateClone', stateClone.user);
+console.log('stateDeepClone', stateDeepClone.user);
+
+console.log('********** 271 Bundling with Parcel **********');
+/**
+ * 271
+ * npm i parcel --save-dev -> Install parcel
+ * npx parcel index.html --> Run parcel
+ * npm scripts:
+ *          "start": "parcel index.html",
+            "build": "parcel build index.html"
+ *          Then use "npm run build" in the terminal
+ *          Then use "npm run build" in the terminal
+ */
+console.log('module hot replacement');
+if (module.hot) {
+  module.hot.accept();
+}
+
+console.log('********** 272 Configuring Babel and Polyfilling **********');
+/**
+ * Parcel made good decisions for browser supports for us
+ */
+
+class Person {
+  #greeting = 'Hey';
+  constructor(name) {
+    this.name = name;
+    console.log(`${this.#greeting}, ${this.name}`);
+  }
+}
+const jonas = new Person('Jonas');
+
+console.log('Jonas' ?? null);
+
+console.log(cart.find(el => el.quantity >= 2));
+Promise.resolve('TEST').then(x => console.log(x));
+
+/*
+import 'core-js/stable';
+// import 'core-js/stable/array/find';
+// import 'core-js/stable/promise';
+
+// Polifilling async functions
+import 'regenerator-runtime/runtime';
+*/
+
+console.log(
+  '********** 273 Modern, clean and declarative JS Programming **********'
+);

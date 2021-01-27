@@ -1,45 +1,51 @@
-var sc = [
+const shoppingCart = [
   { product: 'bread', quantity: 6 },
   { product: 'pizza', quantity: 2 },
   { product: 'milk', quantity: 4 },
   { product: 'water', quantity: 10 },
 ];
 
-var allow = {
+const allowedProducts = {
   lisbon: 5,
   others: 7,
 };
 
-var description = '';
+// let orderDescription = '';
 
-var check = function (city) {
-  if (sc.length > 0) {
-    var allowed;
-    if (city == 'lisbon') {
-      allowed = allow.lisbon;
-    } else {
-      allowed = allow.others;
-    }
+const checkCorrectAllowedProducts = function (cart, numAllowed, city) {
+  if (!cart.length) return [];
 
-    for (item of sc) {
-      if (item.quantity > allowed) item.quantity = allowed;
-    }
-  }
+  // const allowed = numAllowed[city] > 0 ? numAllowed[city] : numAllowed.others;
+  const allowed = numAllowed?.[city] ?? allowedProducts.others;
+  const newCart = cart.map(item => {
+    const { product, quantity } = item;
+    return {
+      product,
+      quantity: quantity > allowed ? allowed : quantity,
+    };
+  });
+
+  return newCart;
 };
-check('lisbon');
-console.log(sc);
 
-var createDescription = function () {
-  var first = sc[0];
-  var p = first.product;
-  var q = first.quantity;
+// TESTS
+const allowedShoppingCart = checkCorrectAllowedProducts(
+  shoppingCart,
+  allowedProducts,
+  'lisbon'
+);
+const allowedShoppingCart2 = checkCorrectAllowedProducts(
+  shoppingCart,
+  allowedProducts,
+  'madrid'
+);
+console.log(shoppingCart, allowedShoppingCart, allowedShoppingCart2);
 
-  if (sc.length > 1) {
-    description = 'Order with ' + q + ' ' + p + ', etc...';
-  } else {
-    description = 'Order with ' + q + ' ' + p + '.';
-  }
+const createOrderDescription = function (cart) {
+  const [{ product: p, quantity: q }] = cart;
+
+  return `Order with ${q} ${p}${cart.length > 1 ? ', etc...' : '.'}`;
 };
-createDescription();
+const orderDescription = createOrderDescription(allowedShoppingCart);
 
-console.log(description);
+console.log(orderDescription);
