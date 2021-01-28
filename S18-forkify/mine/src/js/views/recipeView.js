@@ -1,4 +1,5 @@
-import icons from '';
+import icons from 'url:../../img/icons.svg';
+import { Fraction } from 'fractional';
 
 // 286
 class RecipeView {
@@ -16,6 +17,27 @@ class RecipeView {
   #clear() {
     this.#parentElement.innerHTML = '';
   }
+
+  // 279 spinner
+  renderSpinner = function () {
+    const markup = `
+      <div class="spinner">
+        <svg>
+          <use href="${icons}#icon-loader"></use>
+        </svg>
+      </div>`;
+    this.#parentElement.innerHTML = '';
+    this.#parentElement.insertAdjacentHTML('afterbegin', markup);
+  };
+
+  // 288
+  addHandlerRender()
+  // 284 add listeners to left menu
+// when a link is selected hashChange, when the url is typed load: USING EVENTS AS ARRAY
+['hashchange', 'load'].forEach(ev =>
+  window.addEventListener(ev, controlRecipe)
+);
+
 
   #generateMarkup() {
     return `
@@ -78,20 +100,7 @@ class RecipeView {
     <ul class="recipe__ingredient-list">
 
       ${this.#data.ingredients
-        .map(
-          ingredient => `
-    <li class="recipe__ingredient">
-      <svg class="recipe__icon">
-        <use href="${icons}#icon-check"></use>
-      </svg>
-      <div class="recipe__quantity">${ingredient.quantity}</div>
-      <div class="recipe__description">
-        <span class="recipe__unit">${ingredient.unit}</span>
-        ${ingredient.description}
-      </div>
-    </li>
-`
-        )
+        .map(ingredient => this.#generateMarkupIngredient(ingredient))
         .join(' ')}
     </ul>
   </div>
@@ -116,6 +125,23 @@ class RecipeView {
       </svg>
     </a>
   </div>
+`;
+  }
+
+  #generateMarkupIngredient(ingredient) {
+    return `
+    <li class="recipe__ingredient">
+      <svg class="recipe__icon">
+        <use href="${icons}#icon-check"></use>
+      </svg>
+      <div class="recipe__quantity">${
+        ingredient.quantity ? new Fraction(ingredient.quantity).toString() : ''
+      }</div>
+      <div class="recipe__description">
+        <span class="recipe__unit">${ingredient.unit}</span>
+        ${ingredient.description}
+      </div>
+    </li>
 `;
   }
 }
