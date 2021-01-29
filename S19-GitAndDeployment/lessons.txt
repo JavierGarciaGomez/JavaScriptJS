@@ -1,0 +1,13 @@
+307. Simpley deployment with netlify
+    config in project
+    uploading to netlify
+
+308. Github
+    install git
+    git init
+    login Github
+    git config --global user.name {name}
+    git config --global user.email {mail}
+
+309. Git fundamentals
+    gitIgnore
